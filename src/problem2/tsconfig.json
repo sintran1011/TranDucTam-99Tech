@@ -1,19 +1,9 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@assets/*": [
-        "src/assets/*"
-      ],
-      "@icons/*": [
-        "src/assets/icons/*"
-      ]
-    },
+    
     "types": [
-      "vite-plugin-svgr/client"
+      "vite-plugin-svgr/client",
+      "vite/client",
     ]
   },
   "references": [

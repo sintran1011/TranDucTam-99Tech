@@ -16,6 +16,7 @@ export default defineConfig({
       include: "**/*.svg",
       svgrOptions: {
         expandProps: "end",
+        icon: true,
       },
     }),
   ],

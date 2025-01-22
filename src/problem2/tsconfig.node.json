@@ -1,7 +1,18 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "composite": true,
+    "jsx": "react-jsx",
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
       "@/*": [
@@ -14,12 +25,5 @@
         "src/assets/icons/*"
       ]
     },
-    "strict": true,
-    "jsx": "react-jsx",
-    "lib": [
-      "dom",
-      "es2015"
-    ],
-    "composite": true,
   }
 }
