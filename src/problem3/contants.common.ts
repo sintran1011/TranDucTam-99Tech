@@ -1,9 +1,9 @@
-const PRIORITY_OBJECT = {
+const CURRENCY_PRIORITY = {
   Osmosis: 100,
   Ethereum: 50,
   Arbitrum: 30,
   Zilliqa: 20,
   Neo: 20,
-};
+} as const
 
-export { PRIORITY_OBJECT };
+export { CURRENCY_PRIORITY };

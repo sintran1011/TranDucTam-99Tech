@@ -8,7 +8,7 @@
 //   formatted: string;
 // }
 
-import { PRIORITY_OBJECT } from "./contants.common";
+import { CURRENCY_PRIORITY } from "./contants.common";
 
 // should seperate the interface and reuse it, it will be easier to maintain
 // maybe split WalletBalance into separate file ts for reuseable interface
@@ -20,6 +20,7 @@ interface FormattedWalletBalance extends WalletBalance {
   // this should be number
   // formatted: string;
   formatted: number;
+  usdValue: number;
 }
 
 // interface Props extends BoxProps {}
@@ -55,9 +56,6 @@ const WalletPage: React.FC<WalletPageProps> = (props) => {
       .filter((balance: WalletBalance) => {
         // should not use switch key in a simple case, we should use object instead, and change key to currency as we make interface
         // const balancePriority = getPriority(balance.blockchain);
-        const balancePriority = balance.currency
-          ? PRIORITY_OBJECT[balance.currency]
-          : -99;
 
         // where the lhsPriority? it wrong, replace it with balancePriority and use a clean condition for filter
         // if (lhsPriority > -99) {
@@ -66,14 +64,16 @@ const WalletPage: React.FC<WalletPageProps> = (props) => {
         //   }
         // }
         // return false;
-        return balancePriority > -99 && balance.amount <= 0;
+
+        // I don't get requirements here, but if we just need balance rows with the default currency, then we can use this condition, otherwise we can use only balance.amount > 0
+        return !!CURRENCY_PRIORITY[balance.currency] && balance.amount > 0;
       })
       .sort((lhs: WalletBalance, rhs: WalletBalance) => {
         // with simple case like this, just use this function sort
         // const leftPriority = getPriority(lhs.blockchain);
-        const leftPriority = PRIORITY_OBJECT[lhs.currency];
+        const leftPriority = CURRENCY_PRIORITY[lhs.currency];
         // const rightPriority = getPriority(rhs.blockchain);
-        const rightPriority = PRIORITY_OBJECT[rhs.currency];
+        const rightPriority = CURRENCY_PRIORITY[rhs.currency];
         // if (leftPriority > rightPriority) {
         //   return -1;
         // } else if (rightPriority > leftPriority) {
@@ -98,47 +98,41 @@ const WalletPage: React.FC<WalletPageProps> = (props) => {
   const sortedBalances2 = useMemo(() => {
     return balances
       .map((balance: WalletBalance) => {
-        // const balancePriority = getPriority(balance.blockchain);
-        const balancePriority = balance.currency
-          ? PRIORITY_OBJECT[balance.currency]
-          : -99;
-        return balancePriority > -99 && balance.amount <= 0
-          ? { ...balance, formatted: balance.amount.toFixed() }
+        return !!CURRENCY_PRIORITY[balance.currency] && balance.amount > 0
+          ? {
+              ...balance,
+              formatted: balance.amount.toFixed(),
+              usdValue: prices[balance.currency] * balance.amount,
+            }
           : undefined;
       })
       .filter(Boolean)
       .sort((lhs: WalletBalance, rhs: WalletBalance) => {
-        const leftPriority = PRIORITY_OBJECT[lhs.currency];
-        const rightPriority = PRIORITY_OBJECT[rhs.currency];
+        const leftPriority = CURRENCY_PRIORITY[lhs.currency];
+        const rightPriority = CURRENCY_PRIORITY[rhs.currency];
         return rightPriority - leftPriority;
       });
-  }, [balances]);
+  }, [balances, prices]);
 
-  // use wrong array, should be formattedBalances
+  // use wrong array, should be formattedBalances, and change it to function instead, in case we need to reuse it or make code cleaner
   // const rows = sortedBalances.map(
-  const rows = formattedBalances.map(
-    (balance: FormattedWalletBalance, index: number) => {
-      const usdValue = prices[balance.currency] * balance.amount;
-      // i think we should hide the empty assets, because it will make user confuse, bad UX
-      if (usdValue > 0)
-        return (
-          <WalletRow
-            className={classes.row}
-            // if can, should not use index as key in React,in this case i usse currency because it unique
-            // key={index}
-            key={balance.currency}
-            amount={balance.amount}
-            usdValue={usdValue}
-            formattedAmount={balance.formatted}
-          />
-        );
-      return null;
-    }
+  const renderRows = formattedBalances.map(
+    (balance: FormattedWalletBalance, index: number) => (
+      <WalletRow
+        className={classes.row}
+        // if can, should not use index as key in React,in this case i usse currency because it unique
+        // key={index}
+        key={balance.currency}
+        amount={balance.amount}
+        usdValue={balance.usdValue}
+        formattedAmount={balance.formatted}
+      />
+    )
   );
   // where the children? i don't see UI, so maybe this page use as a template or something like that, so i put children in bottom
   return (
     <div className="flex flex-col gap-6 " {...rest}>
-      <div className="flex flex-col gap-2 ">{rows}</div>
+      <div className="flex flex-col gap-2 ">{renderRows()}</div>
       {children}
     </div>
   );
