@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@icons/*": [
+        "src/assets/icons/*"
+      ]
+    },
+    "types": [
+      "vite-plugin-svgr/client"
+    ]
+  },
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "include": [
+    "src",
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

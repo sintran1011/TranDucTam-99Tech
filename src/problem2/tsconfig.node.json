@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@icons/*": [
+        "src/assets/icons/*"
+      ]
+    },
+    "strict": true,
+    "jsx": "react-jsx",
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "composite": true,
+  }
+}
