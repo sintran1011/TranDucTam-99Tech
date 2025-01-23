@@ -29,6 +29,8 @@ const DEFAULT_VALUES = {
   toAmount: "",
 };
 
+// The file build too large because of svg token not in list, i dont have time to select and clear, sorry about that
+
 const HomePage = () => {
   const { data: { priceList, tokenList } = {} } = useGetWorkpace();
   const [isChanged, setIsChanged] = React.useState(false);
