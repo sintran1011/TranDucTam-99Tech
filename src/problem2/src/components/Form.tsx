@@ -71,7 +71,7 @@ const FormItem = (props: FormItem) => {
       render={({ field: { onChange, onBlur, value }, fieldState }) => {
         const error = fieldState?.error?.message;
         return (
-          <Stack gap="8px" className={className}>
+          <Stack gap="2px" className={className}>
             {label ? (
               <label>
                 <Typography
@@ -106,7 +106,9 @@ const FormItem = (props: FormItem) => {
                 sx={{
                   bottom: 0,
                   fontWeight: 500,
-                  color: "error",
+                  color: "#dc2626",
+                  fontSize: "12px",
+                  lineHeight: "16px",
                 }}
               >
                 {error}

@@ -19,7 +19,18 @@ const useGetWorkpace = () => {
     },
     select(data) {
       const removeDuplicate = new Set(data?.map((item) => item.currency));
-      if (data) return { data, tokenList: Array.from(removeDuplicate) };
+      const priceFormat = (data || []).reduce(
+        (acc: Record<string, number>, item) => {
+          acc[item.currency] = item.price;
+          return acc;
+        },
+        {}
+      );
+      if (data)
+        return {
+          priceList: priceFormat,
+          tokenList: Array.from(removeDuplicate),
+        };
     },
   });
   return query;
